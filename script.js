@@ -4,7 +4,10 @@ const handleCategory = async () => {
   const data = await response.json();
 
   let allData = data.data.news_category;
+
+  
   allData.slice(0, 3).forEach((category) => {
+   
     const tab_container = document.getElementById("tab-container");
 
     const div = document.createElement("div");
@@ -16,19 +19,28 @@ const handleCategory = async () => {
         `;
     tab_container.appendChild(div);
   });
-  console.log(data.data.news_category);
+  
 };
 
 const handleId = async (categoryId) => {
+  
   const response = await fetch(
     `https://openapi.programming-hero.com/api/news/category/${categoryId}`
   );
   const data = await response.json();
-
+    
+  document.getElementById("sort-button").addEventListener("click",function(){
+    const sortedData = data.data
+     const sort =sortedData.sort((a,b) => {
+       new Date(b.author.published_date) - new Date(a.author.published_date)
+    })
+  })
+    
   const cardContainer = document.getElementById("card-container");
   cardContainer.innerHTML = "";
   data.data.forEach((news) => {
-    console.log(news);
+   
+    
     const div = document.createElement("div");
 
     div.innerHTML = `
@@ -69,11 +81,11 @@ const handleModal = async (newsId) => {
   
     const response = await fetch(`https://openapi.programming-hero.com/api/news/${newsId}`)
     const data = await response.json()
-    console.log()
-   
+    
   const modalContainer = document.getElementById("modal-content")
   data.data.forEach((data) =>{
-    console.log(data)
+    
+    
     const div = document.createElement("div");
 
     div.innerHTML = `
@@ -97,6 +109,9 @@ const handleModal = async (newsId) => {
   
     
 };
+
+
+
 
 handleCategory();
 handleId("01");
